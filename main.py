@@ -23,7 +23,7 @@ def sendMail(file, last_line):
 
         for receiver in receiver_emails:
             message = MIMEMultipart("alternative")
-            message["Subject"] = last_line
+            message["Subject"] = "Achtung {} ist bei {}".format(last_line,file)
             message["From"] = sender_email
             message["To"] = receiver
             message.attach(MIMEText("In {} hat sich {} eingetragen! \n Töte ihn!!".format(file, last_line), "plain"))
