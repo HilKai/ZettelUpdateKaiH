@@ -46,9 +46,6 @@ while True:
         file_name = file_name.name
         name, stamp = last_line.split(',')
         timehash = int(stamp.replace(':','').replace('.',''))
-        print(timehash)
-        print(file_stamps[file_name])
-
         if timehash > file_stamps[file_name]:
             file_stamps[file_name] = timehash
             sendMail(file_name,name)
