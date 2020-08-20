@@ -27,10 +27,14 @@ def sendMail(file, last_line):
             message["From"] = sender_email
             message["To"] = receiver
             message.attach(MIMEText("In {} hat sich {} eingetragen! \n Töte ihn!!".format(file, last_line), "plain"))
+            try:
+                server.sendmail(
+                    sender_email, receiver, message.as_string()
+                )
+            except:
+                print("Sending Mail Failed")
 
-            server.sendmail(
-                sender_email, receiver, message.as_string()
-            )
+
 
 file_stamps = defaultdict(int)
 while True:
