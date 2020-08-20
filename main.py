@@ -1,6 +1,9 @@
 import os, time
 import smtplib
 import ssl
+from collections import defaultdict
+from datetime import datetime
+
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -29,24 +32,25 @@ def sendMail(file, last_line):
                 sender_email, receiver, message.as_string()
             )
 
-
-last_update = time.time()
+file_stamps = defaultdict(int)
 while True:
-    current_change = os.stat(path)[8]
-    if current_change > last_update:
-        onlyfiles = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
-        for file_name in onlyfiles:
-            file_change_stamp = os.stat(path + file_name)[8]
-            if file_change_stamp <= current_change and file_change_stamp > last_update:
-                last_line = ""
-                with open(path + file_name, "r") as file_name:
-                    first_line = file_name.readline()
-                    for last_line in file_name:
-                        pass
-                    if not last_line:
-                        last_line = first_line
-                    print(last_line)
-                    sendMail(file_name.name, last_line)
+    onlyfiles = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
+    for file_name in onlyfiles:
+        last_line = ""
+        with open(path + file_name, "r") as file_name:
+            first_line = file_name.readline()
+            for last_line in file_name:
+                pass
+            if not last_line:
+                last_line = first_line
+        file_name = file_name.name
+        name, stamp = last_line.split(',')
+        timehash = int(stamp.replace(':','').replace('.',''))
+        print(timehash)
+        print(file_stamps[file_name])
 
-    last_update = current_change
-    time.sleep(10)
+        if timehash > file_stamps[file_name]:
+            file_stamps[file_name] = timehash
+            sendMail(file_name,name)
+
+    time.sleep(1)
