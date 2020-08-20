@@ -26,7 +26,7 @@ def sendMail(file, last_line):
             message.attach(MIMEText("In {} hat sich {} eingetragen! \n Töte ihn!!".format(file, last_line), "plain"))
 
             server.sendmail(
-                sender_email, receiver_emails, message.as_string()
+                sender_email, receiver, message.as_string()
             )
 
 
