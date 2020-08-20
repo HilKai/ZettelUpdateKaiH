@@ -53,4 +53,4 @@ while True:
             file_stamps[file_name] = timehash
             sendMail(file_name,name)
 
-    time.sleep(1)
+    time.sleep(5)
