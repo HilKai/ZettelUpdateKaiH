@@ -42,7 +42,11 @@ while True:
     for file_name in onlyfiles:
         last_line = ""
         with open(path + file_name, "r") as file_name:
-            first_line = file_name.readline()
+            try:
+                first_line = file_name.readline()
+            except:
+                print("UTF-Failed for file {}".format(file_name))
+                continue
             for last_line in file_name:
                 pass
             if not last_line:
